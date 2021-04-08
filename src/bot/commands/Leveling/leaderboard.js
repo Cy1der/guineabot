@@ -3,6 +3,14 @@ module.exports = {
 	aliases: ["lb"],
 	category: "leveling",
 	run: async (client, message) => {
+		const GuildConfigSchema = await client.db.load("guildconfig");
+		const GuildConfig = await GuildConfigSchema.findOne({
+			Guild: message.guild.id,
+		});
+		const currentStatus = GuildConfig?.Leveling ?? true;
+
+		if (!currentStatus) return message.channel.send(client.embed({ title: "Leveling is disabled" }, message));
+
 		const rawLB = await client.leveling.fetchLeaderboard(
 			message.guild.id,
 			10
