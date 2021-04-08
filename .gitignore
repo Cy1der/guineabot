@@ -1,0 +1,8 @@
+logs
+.git
+node_modules
+config.json
+application.yml
+Lavalink.jar
+guineabot.code-workspace
+package-lock.json
