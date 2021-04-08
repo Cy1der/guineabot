@@ -7,7 +7,9 @@ module.exports = {
 		const mainEmbed = client.embed(
 			{
 				title: "Guineabot Help Menu",
-				description: `${[...client.categories]
+				description: `${client.commands.size} commands found\n\n${[
+					...client.categories,
+				]
 					.map(
 						(category) =>
 							`**${
