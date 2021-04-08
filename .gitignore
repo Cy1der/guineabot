@@ -4,5 +4,6 @@ node_modules
 config.json
 application.yml
 Lavalink.jar
+Lavalink-ARM.jar
 guineabot.code-workspace
 package-lock.json
