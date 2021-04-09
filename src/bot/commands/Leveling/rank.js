@@ -11,8 +11,11 @@ module.exports = {
 		});
 		const currentStatus = GuildConfig?.Leveling ?? true;
 
-		if (!currentStatus) return message.channel.send(client.embed({ title: "Leveling is disabled" }, message));
-		
+		if (!currentStatus)
+			return message.channel.send(
+				client.embed({ title: "Leveling is disabled" }, message)
+			);
+
 		const target =
 			message.mentions.users.first() ||
 			client.users.cache.get(args[0]) ||
