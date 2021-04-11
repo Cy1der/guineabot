@@ -1,1 +1,1 @@
-require(`${__dirname}/bot/shard.js`)();
+require(`./bot/shard`)();
