@@ -1,13 +1,10 @@
 // @ts-nocheck
 const ms = require("ms");
 const leven = require("leven");
-const cleverbot = require("cleverbot-free");
 module.exports = {
 	name: "message",
 	run: async (client, message) => {
-		if (message.author.bot) return;
-		if (!message.guild)
-			return message.channel.send(await cleverbot(message.content));
+		if (message.author.bot || !message.guild) return;
 		const GuildConfigSchema = await client.db.load("guildconfig");
 		const GuildConfig = await GuildConfigSchema.findOne({
 			Guild: message.guild.id,

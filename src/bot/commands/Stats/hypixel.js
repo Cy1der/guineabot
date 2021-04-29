@@ -127,7 +127,13 @@ module.exports = {
 					{
 						title: "An error occurred!",
 						fields: [
-							{ name: "Message", value: `\`${error.message}\`` },
+							{
+								name: "Message",
+								value: `\`${error.message.replace(
+									"[hypixel-api-reborn] ",
+									""
+								)}\``,
+							},
 						],
 					},
 					message

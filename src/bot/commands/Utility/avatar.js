@@ -1,7 +1,6 @@
 module.exports = {
 	name: "avatar",
 	category: "utility",
-	aliases: ["profile"],
 	run: async (client, message, args) => {
 		const target =
 			message.mentions.users.first() ||

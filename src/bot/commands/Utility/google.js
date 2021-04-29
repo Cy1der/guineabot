@@ -50,7 +50,7 @@ module.exports = {
 					description: results.items[0].snippet,
 					url: results.items[0].link,
 					image: {
-						url: results.items[0].pagemap?.cse_image[0]?.src,
+						url: results.items[0]?.pagemap?.cse_image[0]?.src,
 					},
 				},
 				message

@@ -16,7 +16,6 @@
 		"canvas": "^2.7.0",
 		"cheerio": "^1.0.0-rc.5",
 		"child_process": "^1.0.2",
-		"cleverbot-free": "^1.0.5",
 		"color-diff": "^1.2.0",
 		"consola": "^2.15.3",
 		"cpu-stat": "^2.0.1",

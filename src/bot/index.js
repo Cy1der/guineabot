@@ -10,9 +10,10 @@ const config = require("../../config.json");
 const { Manager, Structure } = require("erela.js");
 const Spotify = require("erela.js-spotify");
 const Deezer = require("erela.js-deezer");
-const Facebook = require("erela.js-facebook"); //why the fuck did i install this package
+const Facebook = require("erela.js-facebook"); //why the fuck did I install this package
 const xp = require("discord-xp");
-const { schemas } = require("./schemas");
+const { schemas } = require("./reference/schemas");
+const { jobs } = require("./reference/jobs");
 
 const globPromise = promisify(glob);
 
@@ -22,9 +23,9 @@ Structure.extend(
 		class extends Queue {
 			switch(from, to) {
 				if (typeof from !== "number")
-					throw new TypeError("[BOT] from must be a number");
+					throw new TypeError("[BOT] > from must be a number");
 				if (typeof to !== "number")
-					throw new TypeError("[BOT] to must be a number");
+					throw new TypeError("[BOT] > to must be a number");
 				if (
 					from < 1 ||
 					to < 1 ||
@@ -32,7 +33,7 @@ Structure.extend(
 					to > this.length
 				)
 					throw new Error(
-						`[BOT] from/to must be between 1 and ${this.length}`
+						`[BOT] > from/to must be between 1 and ${this.length}`
 					);
 				const fromPosition = this[from - 1];
 				const toPosition = this[to - 1];
@@ -48,9 +49,9 @@ Structure.extend(
 		class extends Queue {
 			move(from, to) {
 				if (typeof from !== "number")
-					throw new TypeError("[BOT] from must be a number");
+					throw new TypeError("[BOT] > from must be a number");
 				if (typeof to !== "number")
-					throw new TypeError("[BOT] to must be a number");
+					throw new TypeError("[BOT] > to must be a number");
 				if (
 					from < 1 ||
 					to < 1 ||
@@ -58,7 +59,7 @@ Structure.extend(
 					to > this.length
 				)
 					throw new Error(
-						`[BOT] from/to must be between 1 and ${this.length}`
+						`[BOT] > from/to must be between 1 and ${this.length}`
 					);
 				const fromPosition = this[from - 1];
 				const toPosition = this[to - 1];
@@ -93,6 +94,10 @@ client.aliases = new Collection();
 client.categories = new Set();
 client.recent = new Set();
 client.leveling = xp;
+client.economy = {
+	tax: 1.06,
+	jobs,
+};
 client.config = config;
 client.server = config.bot.server_invite;
 client.owners = [...config.bot.owner_ids];
