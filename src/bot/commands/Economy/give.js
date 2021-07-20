@@ -1,16 +1,25 @@
-const ms = require("ms");
 module.exports = {
-	name: "bankrob",
-	aliases: ["heist"],
+	name: "give",
 	category: "economy",
 	run: async (client, message, args) => {
 		if (!args.length)
 			return message.channel.send(
 				client.embed(
-					{ title: "You need to mention someone to rob!" },
+					{ title: "You need to mention someone to give money to!" },
 					message
 				)
 			);
+		if (!args[1])
+			return message.channel.send(
+				client.embed(
+					{
+						title:
+							"You need to specify the amount of money to give!",
+					},
+					message
+				)
+			);
+
 		const target =
 			message.mentions.users.first() || client.users.cache.get(args[0]);
 
@@ -25,40 +34,21 @@ module.exports = {
 			);
 
 		const UserEconomySchema = await client.db.load("userEconomy");
-		const UserEconomyVictim = await UserEconomySchema.findOne({
+		let UserEconomyReciever = await UserEconomySchema.findOne({
 			User: target.id,
 		});
-		const UserEconomyRobber = await UserEconomySchema.findOne({
+		let UserEconomyHost = await UserEconomySchema.findOne({
 			User: message.author.id,
 		});
+
 		const now = Date.now();
 
-		if (!UserEconomyVictim)
-			UserEconomyVictim = await UserEconomySchema.update(
+		if (!UserEconomyReciever)
+			UserEconomyReciever = await UserEconomySchema.update(
 				{ User: target.id },
 				{
 					User: target.id,
-					Bank: 0,
-					Bank: 0,
-					Multi: 1,
-					Job: "Unemployed",
-					JobCooldown: now,
-					DailyCooldown: now,
-					WeeklyCooldown: now,
-					WorkCooldown: now,
-					RobCooldown: now,
-					BankrobCooldown: now,
-					LotteryCooldown: now,
-					Inventory: [],
-				}
-			);
-
-		if (!UserEconomyRobber)
-			UserEconomyRobber = await UserEconomySchema.update(
-				{ User: message.author.id },
-				{
-					User: message.author.id,
-					Bank: 0,
+					Wallet: 0,
 					Bank: 0,
 					Multi: 1,
 					Job: "Unemployed",
@@ -74,79 +64,80 @@ module.exports = {
 				}
 			);
 
-		const RobberCooldown = UserEconomyRobber?.BankrobCooldown ?? now;
-		const VictimBank = UserEconomyVictim?.Bank ?? 0;
-		const RobberBank = UserEconomyRobber?.Bank ?? 0;
-		const RobberWallet = UserEconomyRobber?.Wallet ?? 0;
-
-		if (RobberCooldown > now)
-			return message.channel.send(
-				client.embed(
-					{
-						title: "Relax!",
-						description: `You can rob again in **${ms(
-							RobberCooldown - now,
-							{ long: true }
-						)}**`,
-					},
-					message
-				)
+		if (!UserEconomyHost)
+			UserEconomyHost = await UserEconomySchema.update(
+				{ User: message.author.id },
+				{
+					User: message.author.id,
+					Wallet: 0,
+					Bank: 0,
+					Multi: 1,
+					Job: "Unemployed",
+					JobCooldown: now,
+					DailyCooldown: now,
+					WeeklyCooldown: now,
+					WorkCooldown: now,
+					RobCooldown: now,
+					BankrobCooldown: now,
+					LotteryCooldown: now,
+					PMCooldown: now,
+					Inventory: [],
+				}
 			);
+
+		const RecieverWallet = UserEconomyReciever?.Wallet ?? 0;
+		const HostWallet = UserEconomyHost?.Wallet ?? 0;
 
 		if (target.id === message.author.id)
 			return message.channel.send(
 				client.embed(
 					{
-						title: "You cannot rob yourself!",
+						title: "You cannot give money to yourself!",
 					},
 					message
 				)
 			);
 
-		if (RobberWallet < 2500)
+		const amount = parseInt(args[1]);
+
+		if (isNaN(amount))
 			return message.channel.send(
 				client.embed(
 					{
 						title:
-							"You must have at least 2500 coins in your wallet!",
-					},
-					message
-				)
-			);
-		if (VictimBank < 1250)
-			return message.channel.send(
-				client.embed(
-					{
-						title:
-							"It's not worth it, the victim does not have 1250 coins in their bank.",
+							"Amount of money to give must be a numerical value",
 					},
 					message
 				)
 			);
 
-		const amount = parseInt(Math.floor(Math.random() * (VictimBank / 2)));
+		if (amount > HostWallet)
+			return message.channel.send(
+				client.embed(
+					{ title: `You are ${amount - HostWallet} coins short!` },
+					message
+				)
+			);
 
 		await UserEconomySchema.update(
 			{ User: message.author.id },
 			{
-				Bank: RobberBank + amount,
-				BankrobCooldown: now + ms("6h"),
+				Wallet: HostWallet - amount,
 			}
 		);
 
 		await UserEconomySchema.update(
 			{ User: target.id },
 			{
-				Bank: VictimBank - amount,
+				Wallet: RecieverWallet + amount,
 			}
 		);
 
 		target.send(
-			`**${message.author.username}** stole **${amount}** coins from you!`
+			`**${message.author.username}** gifted you **${amount}** coins!`
 		);
-
 		return message.channel.send(
-			`You stole **${amount}** coins from ${target.username}!`
+			`You gave **${amount}** coins to ${target.username}!`
 		);
 	},
 };

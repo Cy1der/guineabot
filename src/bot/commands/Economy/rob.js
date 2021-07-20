@@ -14,15 +14,15 @@ module.exports = {
 		const target =
 			message.mentions.users.first() || client.users.cache.get(args[0]);
 
-        if (!target) return message.channel.send(
-            client.embed(
-                {
-                    title:
-                        "Invalid user",
-                },
-                message
-            )
-        );
+		if (!target)
+			return message.channel.send(
+				client.embed(
+					{
+						title: "Invalid user",
+					},
+					message
+				)
+			);
 
 		const UserEconomySchema = await client.db.load("userEconomy");
 		const UserEconomyVictim = await UserEconomySchema.findOne({
@@ -49,6 +49,7 @@ module.exports = {
 					RobCooldown: now,
 					BankrobCooldown: now,
 					LotteryCooldown: now,
+					PMCooldown: now,
 					Inventory: [],
 				}
 			);
@@ -69,6 +70,7 @@ module.exports = {
 					RobCooldown: now,
 					BankrobCooldown: now,
 					LotteryCooldown: now,
+					PMCooldown: now,
 					Inventory: [],
 				}
 			);
@@ -81,7 +83,7 @@ module.exports = {
 			return message.channel.send(
 				client.embed(
 					{
-						title: "Relax man!",
+						title: "Relax!",
 						description: `You can rob again in **${ms(
 							RobberCooldown - now,
 							{ long: true }
@@ -91,15 +93,15 @@ module.exports = {
 				)
 			);
 
-        if (target.id === message.author.id) return message.channel.send(
-            client.embed(
-                {
-                    title:
-                        "You cannot rob yourself!",
-                },
-                message
-            )
-        );
+		if (target.id === message.author.id)
+			return message.channel.send(
+				client.embed(
+					{
+						title: "You cannot rob yourself!",
+					},
+					message
+				)
+			);
 
 		if (RobberWallet < 2500)
 			return message.channel.send(

@@ -14,6 +14,7 @@ const Facebook = require("erela.js-facebook"); //why the fuck did I install this
 const xp = require("discord-xp");
 const { schemas } = require("./reference/schemas");
 const { jobs } = require("./reference/jobs");
+const { shop } = require("./reference/shop");
 
 const globPromise = promisify(glob);
 
@@ -97,6 +98,7 @@ client.leveling = xp;
 client.economy = {
 	tax: 1.06,
 	jobs,
+	shop,
 };
 client.config = config;
 client.server = config.bot.server_invite;

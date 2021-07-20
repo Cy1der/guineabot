@@ -1,0 +1,5 @@
+{
+	"editor.autoClosingBrackets": "always",
+	"editor.renderWhitespace": "all",
+	"editor.cursorStyle": "line-thin"
+}

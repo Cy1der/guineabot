@@ -25,6 +25,7 @@ module.exports = {
 					RobCooldown: now,
 					BankrobCooldown: now,
 					LotteryCooldown: now,
+					PMCooldown: now,
 					Inventory: [],
 				}
 			);
@@ -35,7 +36,7 @@ module.exports = {
 			return message.channel.send(
 				client.embed(
 					{
-						title: "Relax man!",
+						title: "Relax!",
 						description: `You can claim your weekly again in **${ms(
 							cooldown - now,
 							{ long: true }

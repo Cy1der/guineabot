@@ -24,6 +24,7 @@ module.exports = {
 					RobCooldown: now,
 					BankrobCooldown: now,
 					LotteryCooldown: now,
+					PMCooldown: now,
 					Inventory: [],
 				}
 			);

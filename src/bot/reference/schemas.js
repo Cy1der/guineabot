@@ -30,6 +30,7 @@ module.exports = {
 				RobCooldown: Date,
 				BankrobCooldown: Date,
 				LotteryCooldown: Date,
+				PMCooldown: Date,
 				Inventory: Array,
 			},
 		},

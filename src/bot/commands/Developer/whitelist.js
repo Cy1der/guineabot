@@ -51,16 +51,16 @@ module.exports = {
 			message.mentions.users.first() ||
 			client.users.cache.find((user) => user.id === args[0]);
 
-		if (!target) return message.channel.send(
-			client.embed(
-				{
-					title:
-						"Invalid user",
-				},
-				message
-			)
-		);
-		
+		if (!target)
+			return message.channel.send(
+				client.embed(
+					{
+						title: "Invalid user",
+					},
+					message
+				)
+			);
+
 		const UserData = await UserDataSchema.findOne({
 			User: target.id,
 		});

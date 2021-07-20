@@ -69,6 +69,16 @@ module.exports = {
 			);
 		if (!message.content.toLowerCase().startsWith(prefix.toLowerCase()))
 			return;
+		if (!client.owners.includes(message.author.id))
+			return message.channel.send(
+				client.embed(
+					{
+						title:
+							"Guineabot is under development, commands to the public audience is temporarily disabled",
+					},
+					message
+				)
+			);
 		if (blacklisted === true && !client.owners.includes(message.author.id))
 			return message.channel.send(
 				client.embed(
