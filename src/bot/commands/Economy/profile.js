@@ -8,9 +8,11 @@ module.exports = {
 			message.author;
 
 		const UserEconomySchema = await client.db.load("userEconomy");
-		const UserEconomy = await UserEconomySchema.findOne({
+		let UserEconomy = await UserEconomySchema.findOne({
 			User: target.id,
 		});
+
+		const now = Date.now();
 
 		if (!UserEconomy)
 			UserEconomy = await UserEconomySchema.update(
