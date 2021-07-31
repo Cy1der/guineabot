@@ -1,7 +1,6 @@
 const ms = require("ms");
 module.exports = {
-	name: "postmeme",
-	aliases: ["pm"],
+	name: "post",
 	category: "economy",
 	run: async (client, message) => {
 		const UserEconomySchema = await client.db.load("userEconomy");
@@ -32,14 +31,14 @@ module.exports = {
 				}
 			);
 
-		const cooldown = UserEconomy?.PMCooldown ?? now;
+		const cooldown = UserEconomy?.PostCooldown ?? now;
 
 		if (cooldown > now) {
 			return message.channel.send(
 				client.embed(
 					{
 						title: "Relax!",
-						description: `You can post memes again in **${ms(
+						description: `You can post pictures again in **${ms(
 							cooldown - now,
 							{ long: true }
 						)}**`,
@@ -49,32 +48,29 @@ module.exports = {
 			);
 		}
 
-		const checkForLaptop = UserEconomy?.Inventory.findIndex((item) => {
-			return item.id === "laptop";
-		});
-		const checkForMouse = UserEconomy?.Inventory.findIndex((item) => {
-			return item.id === "mouse";
+		const checkForPhone = UserEconomy?.Inventory.findIndex((item) => {
+			return item.id === "phone";
 		});
 
-		if (checkForLaptop === -1)
+		if (checkForPhone === -1)
 			return message.channel.send(
 				client.embed(
 					{
 						title: "You lack an item!",
-						description: `You need a **laptop** to post memes`,
+						description: `You need a **smartphone** to post memes`,
 					},
 					message
 				)
 			);
 
-		const laptop = UserEconomy?.Inventory[checkForLaptop];
+		const phone = UserEconomy?.Inventory[checkForPhone];
 
-		if (laptop.charge <= 10)
+		if (phone.charge <= 10)
 			return message.channel.send(
 				client.embed(
 					{
-						title: "Your laptop lacks enough charge!",
-						description: `Purchase or use your existing laptop charger to charge your laptop`,
+						title: "Your phone lacks enough charge!",
+						description: `Purchase or use your existing smartphone charger to charge your laptop`,
 					},
 					message
 				)
@@ -86,41 +82,25 @@ module.exports = {
 		const effort = Math.floor(Math.random() * 10) + 1;
 		const earnings = Number(
 			(
-				((Math.floor(Math.random() * (750 - 250) + 250) + 1) /
-					client.economy.tax) *
-					(checkForMouse !== -1
-						? invCopy[checkForMouse].booster
-						: 1) +
+				(Math.floor(Math.random() * (750 - 250) + 250) + 1) /
+					client.economy.tax +
 				effort * (multi * 2)
 			).toFixed(2)
 		);
 
-		invCopy[checkForLaptop].charge -= 15;
+		invCopy[checkForPhone].charge -= 15;
 
 		await UserEconomySchema.update(
 			{ User: message.author.id },
 			{
 				Wallet: UserEconomy?.Wallet + earnings,
-				PMCooldown: now + ms("3h"),
+				PostCooldown: now + ms("3h"),
 				Inventory: invCopy,
 			}
 		);
 
-		let effortMsg = "";
-
-		if (effort <= 3) effortMsg = "almost no effort on";
-		else if (effort <= 7 && effort >= 4)
-			effortMsg = "a decent amount of effort on";
-		else if (effort >= 8 && effort <= 10) effortMsg = "lots of effort on";
-
 		message.channel.send(
-			`You posted a meme you put ${effortMsg} and earned **${earnings}** coins.\nYour laptop has **${
-				invCopy[checkForLaptop].charge
-			}** charge left.\n${
-				checkForMouse !== -1
-					? "Your mouse granted you an extra 15% boost in coins!"
-					: ""
-			}`
+			`You posted a picture on Instagram and earned **${earnings}** coins.\nYour smartphone has **${invCopy[checkForPhone].charge}** charge left.`
 		);
 	},
 };

@@ -25,10 +25,10 @@ module.exports = {
 			);
 
 		const UserEconomySchema = await client.db.load("userEconomy");
-		const UserEconomyVictim = await UserEconomySchema.findOne({
+		let UserEconomyVictim = await UserEconomySchema.findOne({
 			User: target.id,
 		});
-		const UserEconomyRobber = await UserEconomySchema.findOne({
+		let UserEconomyRobber = await UserEconomySchema.findOne({
 			User: message.author.id,
 		});
 		const now = Date.now();
@@ -51,6 +51,7 @@ module.exports = {
 					LotteryCooldown: now,
 					PMCooldown: now,
 					Inventory: [],
+					PostCooldown: now,
 				}
 			);
 
@@ -72,6 +73,7 @@ module.exports = {
 					LotteryCooldown: now,
 					PMCooldown: now,
 					Inventory: [],
+					PostCooldown: now,
 				}
 			);
 

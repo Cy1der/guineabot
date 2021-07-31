@@ -31,6 +31,7 @@ module.exports = {
 					LotteryCooldown: now,
 					PMCooldown: now,
 					Inventory: [],
+					PostCooldown: now,
 				}
 			);
 
@@ -65,16 +66,24 @@ module.exports = {
 				})
 			);
 
-        invCopy.push(item);
+		invCopy.push(item);
 
-        await UserEconomySchema.update(
-            { User: message.author.id },
-            {
-                Wallet: wallet - item.price,
-                Inventory: invCopy,
-            }
-        );
+		await UserEconomySchema.update(
+			{ User: message.author.id },
+			{
+				Wallet: wallet - item.price,
+				Inventory: invCopy,
+			}
+		);
 
-        message.channel.send(client.embed({ title: "Success!", description: `Successfully purchased 1 **${item.name}** for **${item.price}** coins` }, message))
+		message.channel.send(
+			client.embed(
+				{
+					title: "Success!",
+					description: `Successfully purchased 1 **${item.name}** for **${item.price}** coins`,
+				},
+				message
+			)
+		);
 	},
 };

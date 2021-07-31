@@ -31,6 +31,7 @@ module.exports = {
 				BankrobCooldown: Date,
 				LotteryCooldown: Date,
 				PMCooldown: Date,
+				PostCooldown: Date,
 				Inventory: Array,
 			},
 		},

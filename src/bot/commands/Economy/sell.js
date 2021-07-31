@@ -31,6 +31,7 @@ module.exports = {
 					LotteryCooldown: now,
 					PMCooldown: now,
 					Inventory: [],
+					PostCooldown: now,
 				}
 			);
 
@@ -51,18 +52,26 @@ module.exports = {
 			);
 
 		const invCopy = UserEconomy?.Inventory;
-        const item = invCopy[validateItem];
+		const item = invCopy[validateItem];
 
-        invCopy.splice(validateItem, 1);
+		invCopy.splice(validateItem, 1);
 
-        await UserEconomySchema.update(
-            { User: message.author.id },
-            {
-                Wallet: wallet + item.value,
-                Inventory: invCopy,
-            }
-        );
+		await UserEconomySchema.update(
+			{ User: message.author.id },
+			{
+				Wallet: wallet + item.value,
+				Inventory: invCopy,
+			}
+		);
 
-        message.channel.send(client.embed({ title: "Success!", description: `Successfully sold 1 **${item.name}** for **${item.value}** coins` }, message))
+		message.channel.send(
+			client.embed(
+				{
+					title: "Success!",
+					description: `Successfully sold 1 **${item.name}** for **${item.value}** coins`,
+				},
+				message
+			)
+		);
 	},
 };

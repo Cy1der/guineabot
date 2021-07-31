@@ -72,8 +72,6 @@ Structure.extend(
 						: (this[i - 1] = this[i]);
 				}
 				this[to] = toPosition;
-
-				//this is very inefficient (i think), if you have a better way please tell me
 			}
 		}
 );
@@ -150,6 +148,20 @@ client.manager = new Manager({
 			password: config.bot.lavalink.password,
 			retryDelay: 1000,
 			identifier: "node-3",
+		},
+		{
+			host: config.bot.lavalink.server,
+			port: config.bot.lavalink.port,
+			password: config.bot.lavalink.password,
+			retryDelay: 1000,
+			identifier: "node-4",
+		},
+		{
+			host: config.bot.lavalink.server,
+			port: config.bot.lavalink.port,
+			password: config.bot.lavalink.password,
+			retryDelay: 1000,
+			identifier: "node-5",
 		},
 	],
 	send(id, payload) {

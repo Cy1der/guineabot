@@ -33,6 +33,7 @@ module.exports = {
 					LotteryCooldown: now,
 					PMCooldown: now,
 					Inventory: [],
+					PostCooldown: now,
 				}
 			);
 

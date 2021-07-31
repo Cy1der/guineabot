@@ -5,12 +5,18 @@ module.exports = {
 		const techItems = client.economy.shop.filter((item) => {
 			return item.category === "Tech";
 		});
+		const petItems = client.economy.shop.filter((item) => {
+			return item.category === "Pets";
+		});
+		const foodItems = client.economy.shop.filter((item) => {
+			return item.category === "Food";
+		});
 
 		return message.channel.send(
 			client.embed(
 				{
 					title: "Item shop",
-					description: "Item | ID | Price",
+					description: "Item | ID | Price\n\n*More items coming in the future!*",
 					fields: [
 						{
 							name: "Tech",
@@ -19,8 +25,26 @@ module.exports = {
 									return `${item.name} | ${item.id} | ${item.price}`;
 								})
 								.sort((a, b) => {
-									// ASC  -> a.length - b.length
-									// DESC -> b.length - a.length
+									return a.length - b.length;
+								}),
+						},
+						{
+							name: "Pets",
+							value: petItems
+								.map((item) => {
+									return `${item.name} | ${item.id} | ${item.price}`;
+								})
+								.sort((a, b) => {
+									return a.length - b.length;
+								}),
+						},
+						{
+							name: "Food",
+							value: foodItems
+								.map((item) => {
+									return `${item.name} | ${item.id} | ${item.price}`;
+								})
+								.sort((a, b) => {
 									return a.length - b.length;
 								}),
 						},
